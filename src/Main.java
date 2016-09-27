@@ -1,14 +1,14 @@
 /* WORD LADDER Main.java
  * EE422C Project 3 submission by
  * Replace <...> with your actual data.
- * <Student1 Name>
- * <Student1 EID>
- * <Student1 5-digit Unique No.>
+ * Jake Klovenski
+ * jdk2595
+ * 16455
  * <Student2 Name>
  * <Student2 EID>
  * <Student2 5-digit Unique No.>
  * Slip days used: <0>
- * Git URL:
+ * Git URL:https://github.com/beatbum/WordLadder.git
  * Fall 2016
  */
 
@@ -20,6 +20,8 @@ import java.io.*;
 public class Main {
 	
 	// static variables and constants only here.
+	Set<String> dict;
+	
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -43,6 +45,8 @@ public class Main {
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
+		
+		dict = makeDictionary();
 	}
 	
 	/**
@@ -51,17 +55,30 @@ public class Main {
 	 * If command is /quit, return empty ArrayList. 
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
-		// TO DO
-		return null;
+		String input = keyboard.nextLine();
+		if(input.equals("/quit"))
+		{
+			return new ArrayList();
+		}
+		int space_index = input.indexOf(" ");
+		String start = input.substring(0,space_index-1);
+		String end = input(space_indexi+1);
+		ArrayList<String> parsed = new ArrayList(2);
+		parsed.add(start);
+		parsed.add(end);
+		return parsed;
 	}
 	
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
-		// TODO some code
-		Set<String> dict = makeDictionary();
 		// TODO more code
+		boolean discovered[dict.size()];
+		ArrayList ladder = new ArrayList();
+		Arrays.fill(discovered, false);
+		discoverd.set(dict.indexOf(start),true);
+		
 		
 		return null; // replace this line later with real return
 	}
@@ -69,7 +86,6 @@ public class Main {
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		
 		// TODO some code
-		Set<String> dict = makeDictionary();
 		// TODO more code
 		
 		return null; // replace this line later with real return
@@ -96,4 +112,21 @@ public class Main {
 	}
 	// TODO
 	// Other private static methods here
+	//
+	private static boolean oneAway(String a, String b)
+	{
+		int delta = 0;
+		for(int i = 0; i < a.length; i++)
+		{
+			if(a.charAt(i) != b.charAt(i))
+			{	
+				delta+=1;
+			}
+		}	
+		if(delta != 1)
+		{
+			return false;
+		}
+		return true;
+	}
 }
