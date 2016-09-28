@@ -4,9 +4,9 @@
  * Jake Klovenski
  * jdk2595
  * 16455
- * <Student2 Name>
- * <Student2 EID>
- * <Student2 5-digit Unique No.>
+ * Chris Oligschlaeger
+ * cgo328
+ * 16455
  * Slip days used: <0>
  * Git URL:https://github.com/beatbum/WordLadder.git
  * Fall 2016
@@ -46,7 +46,8 @@ public class Main {
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
 		
-		dict = makeDictionary();
+		dict = makeDictionary();	// Not sure this is necessary
+						// Either call in BFS/DFS OR call it here and pass as parameter
 	}
 	
 	/**
@@ -107,12 +108,27 @@ public class Main {
 		return words;
 	}
 	
+	/**
+	 * @param ladder is the ArrayList of words to be printed
+	 * Print out each word of word ladder in order
+	 **/
 	public static void printLadder(ArrayList<String> ladder) {
-		
+		String word;
+		for (int i = 0; i < ladder.size(); i++) {
+			word = ladder.get(i);
+			System.out.println(word);
+		}
 	}
 	// TODO
 	// Other private static methods here
 	//
+	
+	/**
+	 * @param a is the first String
+	 * @param b is the second String
+	 * @return result of oneAway test
+	 * If words differ by exactly one letter, return true; false otherwise
+	 **/
 	private static boolean oneAway(String a, String b)
 	{
 		int delta = 0;
