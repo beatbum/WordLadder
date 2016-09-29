@@ -21,6 +21,7 @@ public class Main {
 	
 	// static variables and constants only here.
 	static Set<String> dict;
+	static boolean DEBUG = true;
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -37,8 +38,10 @@ public class Main {
 			ps = System.out;			// default to Stdout
 		}
 		initialize();
-		
+		ArrayList<String> input = parse(kb);	
 		// TODO methods to read in words, output ladder
+		//System.out.println(distance(input.get(0), input.get(1)));
+		printLadder(getWordLadderDFS(input.get(0), input.get(1)));
 	}
 	
 	public static void initialize() {
@@ -62,7 +65,7 @@ public class Main {
 			return new ArrayList<String>();
 		}
 		int space_index = input.indexOf(" ");
-		String start = input.substring(0,space_index-1);
+		String start = input.substring(0,space_index);
 		String end = input.substring(space_index+1);
 		ArrayList<String> parsed = new ArrayList<String>(2);
 		parsed.add(start);
@@ -85,31 +88,39 @@ public class Main {
 
 	private static ArrayList<String> recurseDFSLadder(String start, String end, boolean discovered[], ArrayList<String> dictionary)
 	{
-		boolean full_false[] = new boolean[dict.size()];
-		Arrays.fill(full_false, false);
+		if(DEBUG)
+		{
+			System.out.println(start);
+			System.out.println(distance(start,end));
+		}
+		boolean full_true[] = new boolean[dict.size()];
+		Arrays.fill(full_true, true);
 		if(distance(start,end) == 0)
 		{
+			if(DEBUG) { System.out.println("same word now");}
 			ArrayList<String> val = new ArrayList<String>();
 			val.add(start);
 			return val;
 		}	
-		else if(!(discovered.equals(full_false)))
+		else if(discovered.equals(full_true))
 		{
 			return new ArrayList<String>();
 		}
 		else
 		{
-			int min_diff = 1000;
+			
 			int place = 0;
 			ArrayList<String> result = new ArrayList<String>();
 			while(result.isEmpty())
 			{
+				int min_diff = 1000;
 				for(int i = 0; i < dict.size(); i++)
 				{
 					if(distance(dictionary.get(i), start) == 1 && !discovered[i] && distance(dictionary.get(i), end) < min_diff)
 					{
 						place = i;
 						min_diff = distance(dictionary.get(i), end);
+						if(DEBUG) {System.out.println(dictionary.get(i) + " " + min_diff);}
 					}
 				}
 				if(min_diff == 1000)
@@ -119,6 +130,7 @@ public class Main {
 				else
 				{
 					discovered[place] = true;
+					if(DEBUG){System.out.println("ADDING ONE TO LADDER");}
 					result = recurseDFSLadder(dictionary.get(place), end, discovered,dictionary);
 				}
 				result.add(0,start);
@@ -131,7 +143,6 @@ public class Main {
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		
-		// TODO some code
 		// TODO more code
 		
 		return null; // replace this line later with real return
@@ -141,7 +152,7 @@ public class Main {
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
 		try {
-			infile = new Scanner (new File("five_letter_words.txt"));
+			infile = new Scanner (new File("src/five_letter_words.txt"));
 		} catch (FileNotFoundException e) {
 			System.out.println("Dictionary File not Found!");
 			e.printStackTrace();
