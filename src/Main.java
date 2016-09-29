@@ -228,7 +228,7 @@ public class Main {
 			word = parent.name;
 			for (int i = 0; i < word.length(); i++){				// Go through every possible word one letter away
 				String temp = word;						// String that will be changed one letter at a time
-				for (char j = 'a'; j <= 'z'; j++){
+				for (char j = 'A'; j <= 'Z'; j++){
 					temp = temp.substring(0, i) + j + temp.substring(i + 1);
 					if (copy.contains(temp)){				// Check if word is in dictionary
 						child = new Node(temp, parent);			// Create node for word
