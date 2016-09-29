@@ -216,9 +216,11 @@ public class Main {
 		return delta;	
 	}
 	private static Node makeTree(String start, String end){
-		HashSet<String> copy = new HashSet<String>(dict);				// Makes a copy of dictionary
+		HashSet<String> copy = new HashSet<String>();				// Makes a copy of dictionary
+		copy.addAll(dict);
 		Queue<Node> q = new LinkedBlockingQueue<Node>();				// Queue keeps track of which node to genearate children for
 		String word = start;								// The current word being searched for
+		boolean test = copy.remove(start.toUpperCase());
     		Node parent = new Node(start);
     		q.add(parent);
     		Node child;
@@ -227,17 +229,18 @@ public class Main {
 			parent = q.poll();							// Next node to generate children for
 			word = parent.name;
 			for (int i = 0; i < word.length(); i++){				// Go through every possible word one letter away
-				String temp = word;						// String that will be changed one letter at a time
+				String temp = word.toUpperCase();						// String that will be changed one letter at a time
 				for (char j = 'A'; j <= 'Z'; j++){
 					temp = temp.substring(0, i) + j + temp.substring(i + 1);
 					if (copy.contains(temp)){				// Check if word is in dictionary
-						child = new Node(temp, parent);			// Create node for word
+						copy.remove(temp);				// Make sure word isn't used again
+						child = new Node(temp.toLowerCase(), parent);			// Create node for word
 						parent.children.add(child);			// Connect Node to tree
 						q.add(child);					// Put node in queue when it is created
-						copy.remove(temp);				// Make sure word isn't used again
-						if (temp.equals(end)){
+						if (temp.toLowerCase().equals(end)){
 							return child;				// Found final word
 						}
+						
 					}
 				}
 			}
