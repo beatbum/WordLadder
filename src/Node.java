@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class Node
 {
 	Node parent;
@@ -6,19 +7,19 @@ public class Node
 	public Node()
 	{
 		parent = null;
-		children = new ArrayList<Node>;
+		children = new ArrayList<Node>();
 		name = "";
 	}
 	public Node(String s)
 	{
 		parent = null;
-		children = new ArrayList<Node>;
+		children = new ArrayList<Node>();
 		name = s;
 	}
 	public Node(String s, Node n)
 	{
 		parent = n;
-		children = new ArrayList<Node>;
+		children = new ArrayList<Node>();
 		name = s;
 	}
 }
