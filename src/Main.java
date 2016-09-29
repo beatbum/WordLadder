@@ -3,10 +3,10 @@
  * Replace <...> with your actual data.
  * Jake Klovenski
  * jdk2595
- * 16455
+ * 16450
  * Chris Oligschlaeger
  * cgo328
- * 16455
+ * 16450
  * Slip days used: <0>
  * Git URL:https://github.com/beatbum/WordLadder.git
  * Fall 2016
@@ -15,6 +15,7 @@
 
 package assignment3;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.io.*;
 
 public class Main {
@@ -54,9 +55,9 @@ public class Main {
 	}
 	
 	/**
+	 * If command is /quit, return empty ArrayList. 
 	 * @param keyboard Scanner connected to System.in
 	 * @return ArrayList of 2 Strings containing start word and end word. 
-	 * If command is /quit, return empty ArrayList. 
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
 		String input = keyboard.nextLine();
@@ -141,11 +142,28 @@ public class Main {
 		return null;
 	}
 	
-    public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		
-		// TODO more code
-		
-		return null; // replace this line later with real return
+
+	/**
+	 * Uses BFS to find the shortest word ladder between two word
+	 * @param start is the String representing the first word of the ladder
+	 * @param end is the String representing the last word of the ladder
+	 * @return the ArrayList containing the ladder, or empty array if no ladder was found
+	 */
+    	public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    		ArrayList<String> ladder = new ArrayList<String>();
+    		Node endNode = makeTree(start, end);						// Make a tree where endNode is the node containing end
+    		if (endNode == null){										// If no ladder was possible
+    			return ladder;											// Return empty ladder
+    		}
+    		while (endNode != null){									// Go  from the end node up to the root
+    			ladder.add(endNode.name);								// Add the name of each node to ladder
+    			endNode = endNode.parent;
+    		}
+    		ArrayList<String> reversed = new ArrayList<String>();		// Ladder is from end to start, so needs to be reversed
+    		for (int i = 1; i <= ladder.size(); i++){
+    			reversed.add(ladder.get(ladder.size() - i));
+    		}
+			return reversed;
 	}
     
 	public static Set<String>  makeDictionary () {
@@ -165,8 +183,8 @@ public class Main {
 	}
 	
 	/**
-	 * @param ladder is the ArrayList of words to be printed
 	 * Print out each word of word ladder in order
+	 * @param ladder is the ArrayList of words to be printed
 	 **/
 	public static void printLadder(ArrayList<String> ladder) {
 		String word;
@@ -197,5 +215,34 @@ public class Main {
 		}	
 		return delta;	
 	}
-	
+	private static Node makeTree(String start, String end){
+		HashSet<String> copy = new HashSet<String>(dict);				// Makes a copy of dictionary
+		Queue<Node> q = new LinkedBlockingQueue<Node>();				// Queue keeps track of which node to genearate children for
+		String word = start;								// The current word being searched for
+    		Node parent = new Node(start);
+    		q.add(parent);
+    		Node child;
+    	
+		while (!q.isEmpty()){
+			parent = q.poll();							// Next node to generate children for
+			word = parent.name;
+			for (int i = 0; i < word.length(); i++){				// Go through every possible word one letter away
+				String temp = word;						// String that will be changed one letter at a time
+				for (char j = 'a'; j <= 'z'; j++){
+					temp = temp.substring(0, i) + j + temp.substring(i + 1);
+					if (copy.contains(temp)){				// Check if word is in dictionary
+						child = new Node(temp, parent);			// Create node for word
+						parent.children.add(child);			// Connect Node to tree
+						q.add(child);					// Put node in queue when it is created
+						copy.remove(temp);				// Make sure word isn't used again
+						if (temp.equals(end)){
+							return child;				// Found final word
+						}
+					}
+				}
+			}
+			
+		}
+		return null;									// No ladder was found
+	}
 }
