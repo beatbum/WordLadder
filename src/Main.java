@@ -3,10 +3,10 @@
  * Replace <...> with your actual data.
  * Jake Klovenski
  * jdk2595
- * 16455
+ * 16450
  * Chris Oligschlaeger
  * cgo328
- * 16455
+ * 16450
  * Slip days used: <0>
  * Git URL:https://github.com/beatbum/WordLadder.git
  * Fall 2016
@@ -51,9 +51,9 @@ public class Main {
 	}
 	
 	/**
+	 * If command is /quit, return empty ArrayList. 
 	 * @param keyboard Scanner connected to System.in
 	 * @return ArrayList of 2 Strings containing start word and end word. 
-	 * If command is /quit, return empty ArrayList. 
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
 		String input = keyboard.nextLine();
@@ -129,11 +129,38 @@ public class Main {
 		return null;
 	}
 	
-    public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		
-		// TODO some code
-		// TODO more code
-		
+	/**
+	 * Uses BFS to find the shortest word ladder between two word
+	 * @param start is the String representing the first word of the ladder
+	 * @param end is the String representing the last word of the ladder
+	 * @return the ArrayList containing the ladder, or empty array if no ladder was found
+	 */
+   	public static ArrayList<String> getWordLadderBFS(String start, String end) {
+    		HashSet<String> copy = new HashSet<String>(dict);				// Makes a copy of dictionary
+    		String word = start;											// The current word being searched for
+    		Node parent = new Node(start);
+    		Node child;
+    		int i = 0;
+    		char j = 'a';
+    	
+		while ((!copy.isEmpty()) && (!word.equals(end))){
+			while ((i <= word.length()) && (!word.equals(end))){		// Go through every possible word one letter away
+				j = 'a';
+				String temp = word;										// String that will be changed one letter at a time
+			
+				while ((j <= 'z') && (!temp.equals(end))){
+					temp = temp.substring(0, i) + j + temp.substring(i + 1);
+					if (copy.contains(temp)){							// Check if word is in dictionary
+						child = new Node(temp, parent);
+						parent.children.add(child);
+						copy.remove(temp);
+					} 
+					j++;
+				}
+				i++;
+			}
+			
+		}
 		return null; // replace this line later with real return
 	}
     
@@ -154,8 +181,8 @@ public class Main {
 	}
 	
 	/**
-	 * @param ladder is the ArrayList of words to be printed
 	 * Print out each word of word ladder in order
+	 * @param ladder is the ArrayList of words to be printed
 	 **/
 	public static void printLadder(ArrayList<String> ladder) {
 		String word;
