@@ -61,15 +61,16 @@ public class Main {
 	 */
 	public static ArrayList<String> parse(Scanner keyboard) {
 		String input = keyboard.nextLine();
-		if(input.equals("/quit"))
-		{
-			return new ArrayList<String>();
-		}
+		
 		int space_index = input.indexOf(" ");
 		String start = input.substring(0,space_index);
-		start.toUpperCase();
+		start = start.toUpperCase();
 		String end = input.substring(space_index+1);
-		end.toUpperCase();
+		end = end.toUpperCase();
+		if(start.equalsIgnoreCase("/quit") || end.equalsIgnoreCase("/quit"))
+		{
+			System.exit(0);
+		}
 		ArrayList<String> parsed = new ArrayList<String>(2);
 		parsed.add(start);
 		parsed.add(end);
@@ -107,7 +108,7 @@ public class Main {
 		}	
 		else if(discovered.equals(full_true))
 		{
-			return new ArrayList<String>();
+			return new ArrayList<String>(0);
 		}
 		else
 		{
@@ -128,13 +129,17 @@ public class Main {
 				}
 				if(min_diff == 1000)
 				{
-					return new ArrayList<String>();
+					return new ArrayList<String>(0);
 				}
 				else
 				{
 					discovered[place] = true;
 					if(DEBUG){System.out.println("ADDING ONE TO LADDER");}
 					result = recurseDFSLadder(dictionary.get(place), end, discovered,dictionary);
+					if(result.isEmpty())
+					{
+						return result;
+					}
 				}
 				result.add(0,start);
 				return result;
