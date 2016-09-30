@@ -22,7 +22,7 @@ public class Main {
 	
 	// static variables and constants only here.
 	static Set<String> dict;
-	static boolean DEBUG = true;
+	static boolean DEBUG = false;
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -67,7 +67,9 @@ public class Main {
 		}
 		int space_index = input.indexOf(" ");
 		String start = input.substring(0,space_index);
+		start.toUpperCase();
 		String end = input.substring(space_index+1);
+		end.toUpperCase();
 		ArrayList<String> parsed = new ArrayList<String>(2);
 		parsed.add(start);
 		parsed.add(end);
