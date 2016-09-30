@@ -42,7 +42,8 @@ public class Main {
 		ArrayList<String> input = parse(kb);	
 		// TODO methods to read in words, output ladder
 		//System.out.println(distance(input.get(0), input.get(1)));
-		printLadder(getWordLadderDFS(input.get(0), input.get(1)));
+		//printLadder(getWordLadderDFS(input.get(0), input.get(1)));
+		printLadder(getWordLadderBFS(input.get(0), input.get(1)));
 	}
 	
 	public static void initialize() {
@@ -196,7 +197,7 @@ public class Main {
 	public static void printLadder(ArrayList<String> ladder) {
 		String word;
 		for (int i = 0; i < ladder.size(); i++) {
-			word = ladder.get(i);
+			word = ladder.get(i).toLowerCase();
 			System.out.println(word);
 		}
 	}
